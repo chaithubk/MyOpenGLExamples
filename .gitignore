@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/OpenGLExamples/v16
+/glew-2.1.0
+/glfw-3.3.2.bin.WIN64
+/glm-0.9.9.8/glm
+/x64/Debug
+/minimalApp/x64/Debug
+/OpenGLExamples.vcxproj.user
+/minimalApp/MinimalApp.vcxproj.user
+/minimalApp/Debug
+/x64/Release
+/minimalApp/x64/Release
