@@ -13,3 +13,6 @@
 /minimalApp/Debug
 /x64/Release
 /minimalApp/x64/Release
+/glutdlls36
+*.user
+/TriangleOpenGL/x64
