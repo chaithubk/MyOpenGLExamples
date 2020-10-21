@@ -1,5 +1,6 @@
 //STANDARD
 #include<iostream>
+#include<sstream>
 #include<stdlib.h>
 #include<time.h>
 
@@ -20,15 +21,25 @@
 using namespace std;
 
 //GLOBALS
+const string APP_TITLE = "MinimalApp";
 const GLint WIDTH = 1920, HEIGHT = 1080;
 GLfloat currentFrame = 0.0f;
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 
+// Set it to true to create a full screen application. 
+bool gFullScreen = false;
+
 //FUNCTIONS
-void INIT_GLFW()
+int INIT_GLFW()
 {
-	glfwInit();
+	if (!glfwInit())
+	{
+		cerr << "GLFW Initialization failed" << endl;
+		return -1;
+	}
+
+	return 0;
 }
 
 void INIT_GLEW()
@@ -42,6 +53,45 @@ void INIT_GLEW()
 	}
 }
 
+void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+}
+
+void showFPS(GLFWwindow* window)
+{
+	static double previousSeconds = 0.0;
+	static int frameCount = 0;
+	double elpasedSeconds;
+	double currentSeconds = glfwGetTime(); //
+
+	elpasedSeconds = currentSeconds - previousSeconds;
+
+	// limit text update 4 times per second 
+	if (elpasedSeconds > 0.25)
+	{
+		previousSeconds = currentSeconds;
+		double fps = (double)frameCount / elpasedSeconds;
+		double msPerFrame = 1000.0 / fps;
+
+		std::ostringstream outs;
+		outs.precision(3);
+		outs << std::fixed
+			<< APP_TITLE << "   "
+			<< "FPS: " << fps << "   "
+			<< "Frame Time: " << msPerFrame << "(ms)";
+
+		glfwSetWindowTitle(window, outs.str().c_str());
+
+		frameCount = 0;
+	}
+
+	frameCount++;
+}
+
 GLFWwindow* INIT_WINDOW(const int WIDTH, const int HEIGHT, int &screenW, int &screenH)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -50,7 +100,21 @@ GLFWwindow* INIT_WINDOW(const int WIDTH, const int HEIGHT, int &screenW, int &sc
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "01 TRIANGLE", nullptr, nullptr);
+	GLFWwindow* window = NULL;
+
+	if (gFullScreen)
+	{
+		GLFWmonitor* pMonitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* pVmode = glfwGetVideoMode(pMonitor);
+		if (pVmode != NULL)
+		{
+			window = glfwCreateWindow(pVmode->width, pVmode->height, APP_TITLE.c_str(), pMonitor, NULL);
+		}
+	}
+	else
+	{
+		window = glfwCreateWindow(WIDTH, HEIGHT, APP_TITLE.c_str(), nullptr, nullptr);
+	}
 
 	if (window == nullptr)
 	{
@@ -61,6 +125,8 @@ GLFWwindow* INIT_WINDOW(const int WIDTH, const int HEIGHT, int &screenW, int &sc
 	glfwGetFramebufferSize(window, &screenW, &screenH);
 
 	glfwMakeContextCurrent(window);
+
+	glfwSetKeyCallback(window, glfw_onKey);
 
 	glViewport(0, 0, screenW, screenH);
 
@@ -92,19 +158,13 @@ int main()
 	 //MAIN LOOP
 	while (!glfwWindowShouldClose(window))
 	{
-		currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		showFPS(window);
 
 		glfwPollEvents();
 
-		//Update
-
 		//Clear window
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		//Draw
 
 		//Swap buffers
 		glfwSwapBuffers(window);
