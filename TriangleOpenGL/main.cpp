@@ -58,19 +58,30 @@ int main()
 		return -1;
 	}
 
-	GLfloat vertices[] = {
-		// position				// color 
-		0.0f,	0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	// Top
-		0.5f,  -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	// Right
-	   -0.5f,  -0.5f, 0.0f,		0.0f, 0.0f, 1.0f	// Left
+	GLfloat vert_pos[] = {
+		// position				
+		0.0f,	0.5f, 0.0f,		// Top
+		0.5f,  -0.5f, 0.0f,		// Right
+	   -0.5f,  -0.5f, 0.0f		// Left
+	};
+
+	GLfloat vert_color[] = {
+		// color
+		1.0f, 0.0f, 0.0f,	// Top
+		0.0f, 1.0f, 0.0f,	// Right
+		0.0f, 0.0f, 1.0f	// Left
 	};
 
 	// Vertex Buffer Object	
-	GLuint vbo;
+	GLuint vbo, vbo2;
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vert_pos), vert_pos, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &vbo2);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vert_color), vert_color, GL_STATIC_DRAW);
 
 	// Vertex Array Object
 	GLuint vao;
@@ -79,11 +90,12 @@ int main()
 
 	// Format the vertex shader needs to understand
 	// Bind vao and vbo before calling the below methods
-	// STRIDE - sizeof(GLfloat) * 6
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (GLvoid*)(sizeof(GLfloat) * 3));
+	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(1);
 
 	// Create shaders
