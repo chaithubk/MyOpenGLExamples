@@ -25,25 +25,22 @@ const char* APP_TITLE = "Traingle OpenGL";
 const GLint gWindowWidth = 1920;
 const GLint gWindowHeight = 1080;
 GLFWwindow* gWindow = NULL;
+bool gWireFrame = false;
 
 const GLchar* vertexShaderSrc =
 "#version 330 core\n"
 "layout (location = 0) in vec3 pos;"
-"layout (location = 1) in vec3 color;"
-"out vec3 vert_color;"
 "void main()"
 "{"
-"    vert_color = color;"
 "    gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);"
 "}";
 
 const GLchar* fragmentShaderSrc =
 "#version 330 core\n"
 "out vec4 frag_color;"
-"in vec3 vert_color;"
 "void main()"
 "{"
-"    frag_color = vec4(vert_color, 1.0f);"
+"    frag_color = vec4(0.35f, 0.96f, 0.3f, 1.0f);"
 "}";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -58,30 +55,24 @@ int main()
 		return -1;
 	}
 
-	GLfloat vert_pos[] = {
-		// position				
-		0.0f,	0.5f, 0.0f,		// Top
-		0.5f,  -0.5f, 0.0f,		// Right
-	   -0.5f,  -0.5f, 0.0f		// Left
-	};
-
-	GLfloat vert_color[] = {
-		// color
-		1.0f, 0.0f, 0.0f,	// Top
-		0.0f, 1.0f, 0.0f,	// Right
-		0.0f, 0.0f, 1.0f	// Left
+	GLfloat vertices[] = {
+		// trianlge 0				
+		-0.5f,	 0.5f, 0.0f,		
+		 0.5f,   0.5f, 0.0f,		
+	     0.5f,  -0.5f, 0.0f,		
+				
+		// trianlge 1				
+		-0.5f,	 0.5f, 0.0f,		
+		 0.5f,  -0.5f, 0.0f,		
+		-0.5f,  -0.5f, 0.0f			
 	};
 
 	// Vertex Buffer Object	
-	GLuint vbo, vbo2;
+	GLuint vbo;
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vert_pos), vert_pos, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &vbo2);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vert_color), vert_color, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// Vertex Array Object
 	GLuint vao;
@@ -90,13 +81,8 @@ int main()
 
 	// Format the vertex shader needs to understand
 	// Bind vao and vbo before calling the below methods
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	glEnableVertexAttribArray(1);
 
 	// Create shaders
 	//	1. Vertex Shader, 2. Fragment Shader
@@ -151,7 +137,7 @@ int main()
 
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(gWindow);
@@ -173,6 +159,18 @@ void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+
+	// Wireframe mode
+	if (key == GLFW_KEY_W && action == GLFW_PRESS)
+	{
+		gWireFrame = !gWireFrame;
+		if (gWireFrame) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 	}
 }
 
