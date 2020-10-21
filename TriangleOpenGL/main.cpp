@@ -56,15 +56,15 @@ int main()
 	}
 
 	GLfloat vertices[] = {
-		// trianlge 0				
 		-0.5f,	 0.5f, 0.0f,		
 		 0.5f,   0.5f, 0.0f,		
 	     0.5f,  -0.5f, 0.0f,		
-				
-		// trianlge 1				
-		-0.5f,	 0.5f, 0.0f,		
-		 0.5f,  -0.5f, 0.0f,		
 		-0.5f,  -0.5f, 0.0f			
+	};
+
+	GLuint indices[] = {
+		0, 1, 2,		// triangle 0
+		0, 2, 3			// triangle 1
 	};
 
 	// Vertex Buffer Object	
@@ -81,8 +81,16 @@ int main()
 
 	// Format the vertex shader needs to understand
 	// Bind vao and vbo before calling the below methods
+	// position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
+
+	// Index Buffer Object
+	// Called as Element Array Buffer in OpenGL 
+	GLuint ibo;
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Create shaders
 	//	1. Vertex Shader, 2. Fragment Shader
@@ -137,7 +145,7 @@ int main()
 
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(gWindow);
@@ -146,6 +154,7 @@ int main()
 	glDeleteProgram(shaderProgram);
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ibo);
 
 	//TERMINATE GLFW
 	glfwTerminate();
