@@ -29,17 +29,21 @@ GLFWwindow* gWindow = NULL;
 const GLchar* vertexShaderSrc =
 "#version 330 core\n"
 "layout (location = 0) in vec3 pos;"
+"layout (location = 1) in vec3 color;"
+"out vec3 vert_color;"
 "void main()"
 "{"
+"    vert_color = color;"
 "    gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);"
 "}";
 
 const GLchar* fragmentShaderSrc =
 "#version 330 core\n"
 "out vec4 frag_color;"
+"in vec3 vert_color;"
 "void main()"
 "{"
-"    frag_color = vec4(0.35f, 0.96f, 0.3f, 1.0f);"
+"    frag_color = vec4(vert_color, 1.0f);"
 "}";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -55,9 +59,10 @@ int main()
 	}
 
 	GLfloat vertices[] = {
-		0.0f,	0.5f, 0.0f,		// Top
-		0.5f,  -0.5f, 0.0f,		// Right
-	   -0.5f,  -0.5f, 0.0f		// Left
+		// position				// color 
+		0.0f,	0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	// Top
+		0.5f,  -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	// Right
+	   -0.5f,  -0.5f, 0.0f,		0.0f, 0.0f, 1.0f	// Left
 	};
 
 	// Vertex Buffer Object	
@@ -74,8 +79,12 @@ int main()
 
 	// Format the vertex shader needs to understand
 	// Bind vao and vbo before calling the below methods
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	// STRIDE - sizeof(GLfloat) * 6
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, NULL);
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (GLvoid*)(sizeof(GLfloat) * 3));
+	glEnableVertexAttribArray(1);
 
 	// Create shaders
 	//	1. Vertex Shader, 2. Fragment Shader
