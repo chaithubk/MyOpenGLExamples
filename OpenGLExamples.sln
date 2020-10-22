@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TraingleOpenGL", "TriangleO
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloShader", "HelloShader\HelloShader.vcxproj", "{B64A5FAB-35C8-446D-8156-700C5F3D39F9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureMapping", "TextureMapping\TextureMapping.vcxproj", "{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{B64A5FAB-35C8-446D-8156-700C5F3D39F9}.Release|x64.Build.0 = Release|x64
 		{B64A5FAB-35C8-446D-8156-700C5F3D39F9}.Release|x86.ActiveCfg = Release|Win32
 		{B64A5FAB-35C8-446D-8156-700C5F3D39F9}.Release|x86.Build.0 = Release|Win32
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Debug|x64.ActiveCfg = Debug|x64
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Debug|x64.Build.0 = Debug|x64
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Debug|x86.ActiveCfg = Debug|Win32
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Debug|x86.Build.0 = Debug|Win32
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Release|x64.ActiveCfg = Release|x64
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Release|x64.Build.0 = Release|x64
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Release|x86.ActiveCfg = Release|Win32
+		{59D2EE85-5ADA-42B9-8B54-D0E3EB5032E2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
