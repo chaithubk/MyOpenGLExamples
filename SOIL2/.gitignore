@@ -1,7 +1,6 @@
 bin/soil2/
 bin/soil2-*
 obj/
-make/
 lib/
 bin/dds/
 projects/
