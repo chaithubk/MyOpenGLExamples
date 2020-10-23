@@ -25,14 +25,15 @@ using namespace std;
 
 //GLOBALS
 const char* APP_TITLE = "Hello Shader";
-const GLint gWindowWidth = 1920;
-const GLint gWindowHeight = 1080;
+GLint gWindowWidth = 1024;
+GLint gWindowHeight = 760;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
 const std::string texture1Filename = "woodcrate_diffuse.jpg";
 const std::string texture2Filename = "crate.jpg";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
+void glfw_onFrameBufferSize(GLFWwindow* window, int width, int height);
 void showFPS(GLFWwindow* window);
 bool initOpenGL();
 
@@ -140,7 +141,7 @@ int main()
 
 		glfwPollEvents();
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		texture1.bind(0);
 
@@ -180,6 +181,13 @@ int main()
 	glfwTerminate();
 
 	return 0;
+}
+
+void glfw_onFrameBufferSize(GLFWwindow* window, int width, int height)
+{
+	gWindowWidth = width;
+	gWindowHeight = height;
+	glViewport(0, 0, gWindowWidth, gWindowHeight);
 }
 
 //FUNCTIONS
@@ -270,6 +278,8 @@ bool initOpenGL()
 	}
 
 	glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
+	glViewport(0, 0, gWindowWidth, gWindowHeight);
+	glEnable(GL_DEPTH_TEST);
 
 	return true;
 }

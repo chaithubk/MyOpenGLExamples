@@ -79,7 +79,7 @@ void Texture2D::bind(GLuint texUnit)
 {
 	assert(texUnit >= 0 && texUnit < 32);
 
-//	glActiveTexture(GL_TEXTURE0 + texUnit);
+	glActiveTexture(GL_TEXTURE0 + texUnit);
 	glBindTexture(GL_TEXTURE_2D, mTexture);
 }
 
@@ -88,6 +88,6 @@ void Texture2D::bind(GLuint texUnit)
 //-----------------------------------------------------------------------------
 void Texture2D::unbind(GLuint texUnit)
 {
-//	glActiveTexture(GL_TEXTURE0 + texUnit);
+	glActiveTexture(GL_TEXTURE0 + texUnit);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
