@@ -171,7 +171,9 @@
 copy /Y $(SolutionDir)glfw-3.3.2.bin.WIN64\lib-mingw-w64\glfw3.dll $(TargetDir)glfw3.dll
 copy /Y $(ProjectDir)shaders\basic.vert $(TargetDir)basic.vert
 copy /Y $(ProjectDir)shaders\basic.frag $(TargetDir)basic.frag
-copy /Y $(ProjectDir)textures\crate.jpg $(TargetDir)crate.jpg</Command>
+copy /Y $(ProjectDir)textures\crate.jpg $(TargetDir)crate.jpg
+copy /Y $(ProjectDir)textures\aeroplane.png $(TargetDir)aeroplane.png
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

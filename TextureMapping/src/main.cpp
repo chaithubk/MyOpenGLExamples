@@ -29,7 +29,8 @@ const GLint gWindowWidth = 1920;
 const GLint gWindowHeight = 1080;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
-const std::string texture1 = "crate.jpg";
+const std::string texture1Filename = "aeroplane.png";
+const std::string texture2Filename = "crate.jpg";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 void showFPS(GLFWwindow* window);
@@ -89,8 +90,11 @@ int main()
 	ShaderProgram shaderProgram;
 	shaderProgram.loadShaders("basic.vert", "basic.frag");
 
-	Texture2D texture;
-	texture.loadTexture(texture1, true);
+	Texture2D texture1;
+	texture1.loadTexture(texture1Filename, true);
+
+	Texture2D texture2;
+	texture2.loadTexture(texture2Filename, true);
 
 	// Main loop
 	while (!glfwWindowShouldClose(gWindow))
@@ -101,7 +105,11 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		texture.bind();
+		texture1.bind(0);
+		texture2.bind(1);
+
+		glUniform1i(glGetUniformLocation(shaderProgram.getProgram(), "myTexture1"), 0);
+		glUniform1i(glGetUniformLocation(shaderProgram.getProgram(), "myTexture2"), 1);
 
 		shaderProgram.use();
 
