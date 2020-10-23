@@ -15,9 +15,15 @@
     <ClCompile Include="src\ShaderProgram.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Texture2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShaderProgram.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture2D.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,6 +19,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "ShaderProgram.h"
+#include "Texture2D.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ const GLint gWindowWidth = 1920;
 const GLint gWindowHeight = 1080;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
+const std::string texture1 = "crate.jpg";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 void showFPS(GLFWwindow* window);
@@ -42,10 +44,11 @@ int main()
 	}
 
 	GLfloat vertices[] = {
-		-0.5f,	 0.5f, 0.0f,		
-		 0.5f,   0.5f, 0.0f,		
-	     0.5f,  -0.5f, 0.0f,		
-		-0.5f,  -0.5f, 0.0f			
+		// position					// texture coords
+		-0.5f,	 0.5f, 0.0f,		0.0f, 1.0f,		// top left
+		 0.5f,   0.5f, 0.0f,		1.0f, 1.0f,		// top right
+	     0.5f,  -0.5f, 0.0f,		1.0f, 0.0f,		// bottom right
+		-0.5f,  -0.5f, 0.0f,		0.0f, 0.0f		// bottom left	
 	};
 
 	GLuint indices[] = {
@@ -68,8 +71,13 @@ int main()
 	// Format the vertex shader needs to understand
 	// Bind vao and vbo before calling the below methods
 	// position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), NULL);
 	glEnableVertexAttribArray(0);
+
+	// texture coords
+	// STRIDE for UV coords is 20 - 5 * size of float
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 	// Index Buffer Object
 	// Called as Element Array Buffer in OpenGL 
@@ -81,6 +89,9 @@ int main()
 	ShaderProgram shaderProgram;
 	shaderProgram.loadShaders("basic.vert", "basic.frag");
 
+	Texture2D texture;
+	texture.loadTexture(texture1, true);
+
 	// Main loop
 	while (!glfwWindowShouldClose(gWindow))
 	{
@@ -90,17 +101,9 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		texture.bind();
+
 		shaderProgram.use();
-
-		// NOTE: Set the uniform after the .use()
-		GLfloat time = glfwGetTime();
-		GLfloat blueColor = (sin(time) / 2) + 0.5f;
-		glm::vec2 pos;
-		pos.x = sin(time) / 2;
-		pos.y = cos(time) / 2;
-
-		shaderProgram.setUniform("posOffset", pos);
-		shaderProgram.setUniform("vertColor", glm::vec4(0.0f, 0.0f, blueColor, 1.0f));
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

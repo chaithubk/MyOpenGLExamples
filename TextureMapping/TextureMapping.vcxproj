@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
+    <ClCompile Include="src\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShaderProgram.h" />
+    <ClInclude Include="src\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basic.frag" />
@@ -154,7 +156,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)glm-0.9.9.8\glm;$(SolutionDir)glfw-3.3.2.bin.WIN64\include;$(SolutionDir)glew-2.1.0\include;$(SolutionDir)glutdlls36;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)glm-0.9.9.8\glm;$(SolutionDir)glfw-3.3.2.bin.WIN64\include;$(SolutionDir)glew-2.1.0\include;$(SolutionDir)glutdlls36;$(SolutionDir)stb-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,7 +170,8 @@
       <Command>copy /Y $(SolutionDir)glew-2.1.0\bin\Release\x64\glew32.dll $(TargetDir)glew32.dll
 copy /Y $(SolutionDir)glfw-3.3.2.bin.WIN64\lib-mingw-w64\glfw3.dll $(TargetDir)glfw3.dll
 copy /Y $(ProjectDir)shaders\basic.vert $(TargetDir)basic.vert
-copy /Y $(ProjectDir)shaders\basic.frag $(TargetDir)basic.frag</Command>
+copy /Y $(ProjectDir)shaders\basic.frag $(TargetDir)basic.frag
+copy /Y $(ProjectDir)textures\crate.jpg $(TargetDir)crate.jpg</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
