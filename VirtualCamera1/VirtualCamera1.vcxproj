@@ -118,7 +118,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)glm-0.9.9.8\glm;$(SolutionDir)glfw-3.3.2.bin.WIN64\include;$(SolutionDir)glew-2.1.0\include;$(SolutionDir)glutdlls36;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)glm-0.9.9.8\glm;$(SolutionDir)glfw-3.3.2.bin.WIN64\include;$(SolutionDir)glew-2.1.0\include;$(SolutionDir)glutdlls36;$(SolutionDir)stb-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
