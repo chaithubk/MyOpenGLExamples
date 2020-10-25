@@ -30,7 +30,6 @@ GLint gWindowHeight = 760;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
 const std::string texture1Filename = "woodcrate_diffuse.jpg";
-const std::string texture2Filename = "crate.jpg";
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 void glfw_onFrameBufferSize(GLFWwindow* window, int width, int height);
@@ -268,6 +267,7 @@ bool initOpenGL()
 	glfwMakeContextCurrent(gWindow);
 
 	glfwSetKeyCallback(gWindow, glfw_onKey);
+	glfwSetFramebufferSizeCallback(gWindow, glfw_onFrameBufferSize);
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
