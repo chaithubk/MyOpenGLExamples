@@ -24,9 +24,9 @@
 using namespace std;
 
 //GLOBALS
-const char* APP_TITLE = "Hello Shader";
+const char* APP_TITLE = "Hello Camera I";
 GLint gWindowWidth = 1024;
-GLint gWindowHeight = 760;
+GLint gWindowHeight = 768;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
 const std::string texture1Filename = "woodcrate_diffuse.jpg";
@@ -142,7 +142,7 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		texture1.bind(0);
+		texture1.bind();
 
 		cubeAngle += (float)(deltaTime * 50.0f);
 		if (cubeAngle >= 360.0)
@@ -150,7 +150,7 @@ int main()
 
 		glm::mat4 model, view, projection;
 
-		model = glm::translate(model, cubePos) * glm::rotate(model, glm::radians(cubeAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, cubePos) * glm::rotate(model, glm::radians(cubeAngle), glm::vec3(0.0f, 1.0f, 0.0));
 		glm::vec3 camPos(0.0f, 0.0f, 0.0f);
 		glm::vec3 targetPos(0.0f, 0.0f, -1.0f);
 		glm::vec3 up(0.0f, 1.0f, 0.0f);
@@ -277,7 +277,7 @@ bool initOpenGL()
 		return false;
 	}
 
-	glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
+	glClearColor(0.23f, 0.38f, 0.47f, 1.0f);
 	glViewport(0, 0, gWindowWidth, gWindowHeight);
 	glEnable(GL_DEPTH_TEST);
 
