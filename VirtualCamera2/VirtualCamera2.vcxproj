@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
     <ClCompile Include="src\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\ShaderProgram.h" />
     <ClInclude Include="src\Texture2D.h" />
   </ItemGroup>
@@ -171,7 +173,8 @@
 copy /Y $(SolutionDir)glfw-3.3.2.bin.WIN64\lib-mingw-w64\glfw3.dll $(TargetDir)glfw3.dll
 copy /Y $(ProjectDir)shaders\basic.vert $(TargetDir)basic.vert
 copy /Y $(ProjectDir)shaders\basic.frag $(TargetDir)basic.frag
-copy /Y $(ProjectDir)textures\woodcrate_diffuse.jpg $(TargetDir)woodcrate_diffuse.jpg</Command>
+copy /Y $(ProjectDir)textures\woodcrate_diffuse.jpg $(TargetDir)woodcrate_diffuse.jpg
+copy /Y $(ProjectDir)textures\tile_floor.jpg $(TargetDir)tile_floor.jpg</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

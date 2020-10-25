@@ -20,19 +20,30 @@
 
 #include "ShaderProgram.h"
 #include "Texture2D.h"
+#include "Camera.h"
+
 
 using namespace std;
 
 //GLOBALS
-const char* APP_TITLE = "Hello Shader";
+const char* APP_TITLE = "Hello Camera II";
 GLint gWindowWidth = 1024;
 GLint gWindowHeight = 760;
 GLFWwindow* gWindow = NULL;
 bool gWireFrame = false;
 const std::string texture1Filename = "woodcrate_diffuse.jpg";
+const std::string texture2Filename = "tile_floor.jpg";
+
+OrbitCamera orbitCamera;
+float gYaw = 0.0f;
+float gPitch = 0.0f;
+float gRadius = 10.0f;
+const float MOUSE_SENSITIVITY = 0.25f;
+
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 void glfw_onFrameBufferSize(GLFWwindow* window, int width, int height);
+void glfw_onMouseMove(GLFWwindow* window, double posX, double posY);
 void showFPS(GLFWwindow* window);
 bool initOpenGL();
 
@@ -127,6 +138,9 @@ int main()
 	Texture2D texture1;
 	texture1.loadTexture(texture1Filename, true);
 
+	Texture2D texture2;
+	texture2.loadTexture(texture2Filename, true);
+
 	float cubeAngle = 0.0f;
 	double lastTime = glfwGetTime();
 
@@ -144,18 +158,15 @@ int main()
 
 		texture1.bind(0);
 
-		cubeAngle += (float)(deltaTime * 50.0f);
-		if (cubeAngle >= 360.0)
-			cubeAngle = 0.0f;
-
 		glm::mat4 model, view, projection;
 
-		model = glm::translate(model, cubePos) * glm::rotate(model, glm::radians(cubeAngle), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::vec3 camPos(0.0f, 0.0f, 0.0f);
-		glm::vec3 targetPos(0.0f, 0.0f, -1.0f);
-		glm::vec3 up(0.0f, 1.0f, 0.0f);
+		orbitCamera.setLookAt(cubePos);
+		orbitCamera.rotate(gYaw, gPitch);
+		orbitCamera.setRadius(gRadius);
 
-		view = glm::lookAt(camPos, targetPos, up);
+		model = glm::translate(model, cubePos) * glm::rotate(model, glm::radians(cubeAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		view = orbitCamera.getViewMatrix();
 		projection = glm::perspective(glm::radians(45.0f), (float)gWindowWidth / (float)gWindowHeight, 0.1f, 100.0f);
 
 		shaderProgram.use();
@@ -166,6 +177,16 @@ int main()
 
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		texture2.bind(0);
+
+		glm::vec3 floorPos;
+		floorPos.y = -1.0f;
+		model = glm::translate(model, floorPos) * glm::scale(model, glm::vec3(10.0f, 0.01f, 10.0f));
+
+		shaderProgram.setUniform("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(gWindow);
@@ -187,6 +208,31 @@ void glfw_onFrameBufferSize(GLFWwindow* window, int width, int height)
 	gWindowWidth = width;
 	gWindowHeight = height;
 	glViewport(0, 0, gWindowWidth, gWindowHeight);
+}
+
+void glfw_onMouseMove(GLFWwindow* window, double posX, double posY)
+{
+	static glm::vec2 lastMousePos = glm::vec2(0, 0);
+
+	// Update angles based on Left Mouse Button input to orbit around the cube
+	if (glfwGetMouseButton(gWindow, GLFW_MOUSE_BUTTON_LEFT) == 1)
+	{
+		// each pixel represents a quarter of a degree rotation (thi is our mouse sensitivity)
+		gYaw -= ((float)posX - lastMousePos.x) * MOUSE_SENSITIVITY;
+		gPitch += ((float)posY - lastMousePos.y) * MOUSE_SENSITIVITY;
+	}
+
+	// change orbit camera radius with the Right Mouse Button
+	if (glfwGetMouseButton(gWindow, GLFW_MOUSE_BUTTON_RIGHT) == 1)
+	{
+		// each pixel represents a quarter of a degree rotation (thi is our mouse sensitivity)
+		float dx = 0.01f * ((float)posX - lastMousePos.x);
+		float dy = 0.01f * ((float)posY - lastMousePos.y);
+		gRadius += dx - dy;
+	}
+
+	lastMousePos.x = (float)posX;
+	lastMousePos.y = (float)posY;
 }
 
 //FUNCTIONS
