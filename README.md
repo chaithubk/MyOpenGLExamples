@@ -16,3 +16,6 @@ https://www.glfw.org/download.html
 ## Link & Include dependencies 
 Download the pre-built binaries & libraries from the above mentioned references 
 Unzip the archive to the same directory as `.sln` file. 
+
+# Note 
+The examples in this repo was based on the course `Learn Modern OpenGL Programming by Game Institute™ `
